@@ -16,7 +16,7 @@ def time2D():
         for _ in range(100):
             data = raw_data.transpose(1,2).reshape(b*t, c, h, w).detach()
             out = conv2d(data)
-            out = out.view(b, t, c, h, w).transpose(1, 2)
+            out = out.view(b, t, c, h, w).transpose(1, 2).contiguous()
             out.mean().backward()
         torch.cuda.synchronize()
         end = time.time()
