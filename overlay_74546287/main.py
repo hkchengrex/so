@@ -47,17 +47,17 @@ def process_video(video_name):
         cv2.imwrite(path.join(vid_output_path, f), overlay)
 
 
+parser = ArgumentParser()
+parser.add_argument('--image_path')
+parser.add_argument('--mask_path')
+parser.add_argument('--output_path')
+args = parser.parse_args()
+
+image_path = args.image_path
+mask_path = args.mask_path
+output_path = args.output_path
+
 if __name__ == '__main__':
-    parser = ArgumentParser()
-    parser.add_argument('--image_path')
-    parser.add_argument('--mask_path')
-    parser.add_argument('--output_path')
-    args = parser.parse_args()
-
-    image_path = args.image_path
-    mask_path = args.mask_path
-    output_path = args.output_path
-
     videos = sorted(
         list(set(os.listdir(image_path)).intersection(
                 set(os.listdir(mask_path))))
@@ -66,6 +66,6 @@ if __name__ == '__main__':
     print(f'Processing {len(videos)} videos.')
 
     pool = Pool()
-    pool.apply(process_video, videos)
+    pool.map(process_video, videos)
 
     print('Done')
